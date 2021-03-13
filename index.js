@@ -92,9 +92,7 @@ mongoose
 
       app.use("/cards", require("./routes/cards")(upload, gfs)); // collection
 
-      app.listen(PORT, () =>
-        console.log(`Server Running on Port: http://localhost:${PORT}`)
-      );
+      app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
     });
   })
   .catch((error) => console.log(`${error} did not connect`));

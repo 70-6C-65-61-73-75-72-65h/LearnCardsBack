@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
-// new
 const inviteSchema = mongoose.Schema({
-  //  if email exists => res.status(404).json({message: 'Invitation was already sent'})
+  //  if email exists => res.status(404).send('Invitation was already sent')
   email: { type: String, required: true, unique: true },
   inviteJWT: String,
 });

@@ -6,10 +6,6 @@ const {
   PictureCard,
   TheoryCard,
 } = require("../models/card.js");
-// const checkFileType = require("../utils/checkFileType.js");
-// const { searchSmth } = require("../utils/AtlasSearch.js");
-
-// new Date(+new Date() + 3600 * 24 * 1000);
 
 // only after reviewed set LEARNED to true;
 exports.getTodayCards = () => (req, res) => {
@@ -18,9 +14,7 @@ exports.getTodayCards = () => (req, res) => {
     nextRepeatStart: { $lte: currentTime },
     learned: false,
     ownerId: req.userId,
-  })
-    // change to nextRepeatStart
-    .sort({ createdAt: -1 });
+  }).sort({ createdAt: -1 });
 
   query
     .exec()
@@ -64,7 +58,7 @@ exports.getTodayCards = () => (req, res) => {
         cards,
       });
     })
-    .catch((err) => res.status(500).send(err.message)); //(console.log(error)
+    .catch((err) => res.status(500).send(err.message));
 };
 
 exports.getSingleCard = () => async (req, res) => {
@@ -126,7 +120,6 @@ exports.cardWasViewed = () => async (req, res) => {
 const createCardFactory = (req, res) => {
   try {
     const { theme, topic, ownerName, urlSrc, _type } = req.body;
-    // console.log(req._type);
     switch (_type) {
       case "code": {
         return new CodeCard({
@@ -147,7 +140,6 @@ const createCardFactory = (req, res) => {
           urlSrc,
           filename: req.file.filename,
           fileId: req.file.id,
-          // createdAt: new Date().toISOString(),
         });
       }
       case "theory": {
@@ -183,7 +175,6 @@ exports.createCard = () => async (req, res) => {
       });
     }
     // appropriate to req.body.type from front select which type of card create
-    // TODO change to factory function
 
     let newCard = createCardFactory(req, res);
     if (newCard.save === void 0) {
@@ -228,7 +219,7 @@ exports.getCardPicture = (gfs) => (req, res) => {
 
 const updateCardFactory = (req, res, cardId) => {
   try {
-    // _type will be setled from existing card (we get it after creation with other fields) TODO check if it has exactly '_type' attribute , not '__t'
+    // _type will be setled from existing card (we get it after creation with other fields)
     const { theme, topic, urlSrc, _type } = req.body;
     switch (_type) {
       case "code": {
@@ -250,7 +241,6 @@ const updateCardFactory = (req, res, cardId) => {
           fileId: req.file ? req.file.id : void 0,
           _id: cardId,
           _type,
-          // createdAt: new Date().toISOString(),
         };
       }
       case "theory": {
@@ -302,17 +292,13 @@ exports.updateCard = () => async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No card with id: ${id}`);
 
-    // console.log(req.body);
     let updatedCardFields = updateCardFactory(req, res, id);
-    // console.log(updatedCardFields);
 
     let updatedCard = await fundByIdAndUpdateFactory(
       typesModelsRelation,
       id,
       updatedCardFields
     );
-
-    // console.log(updatedCard);
     res.json(updatedCard);
   } catch (error) {
     return res.status(500).send(error.message);

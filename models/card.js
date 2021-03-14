@@ -1,30 +1,17 @@
 const mongoose = require("mongoose");
-// extend = require("mongoose-schema-extend");
-
 const options = { discriminatorKey: "_type" };
-
-// new
-// ownerId, ownerName, topic, theme, urlSrc
 const cardSchema = new mongoose.Schema(
   {
-    // _type: {
-    //   type: String,
-    //   required: true,
-    // },
     createdAt: {
       default: Date.now(),
       type: Date,
     },
 
     nextRepeatStart: {
-      // save as timestamp (not date string)
-      // required: true,
       default: +Date.now(),
       type: Number,
     },
     nextRepeatEnd: {
-      // save as timestamp (not date string)
-      // required: true,
       default: +Date.now() + 3600 * 24 * 1000,
       type: Number,
     },
@@ -60,8 +47,6 @@ const cardSchema = new mongoose.Schema(
     },
   },
   options
-  // { discriminatorKey: "_type" }
-  // { collection: "card"  }
 );
 
 const CardModel = mongoose.model("Card", cardSchema);
@@ -115,14 +100,7 @@ const theoryCardSchema = CardModel.discriminator(
 
 module.exports = {
   Card: CardModel,
-  //   create code // picture // theory -> but find in Card.find({_type:correctType})  or all types and then sort by types
-  CodeCard: codeCardSchema, //mongoose.model("CodeCard", codeCardSchema),
-  PictureCard: pictureCardSchema, //mongoose.model("PictureCard", pictureCardSchema),
-  TheoryCard: theoryCardSchema, //mongoose.model("TheoryCard", theoryCardSchema),
+  CodeCard: codeCardSchema,
+  PictureCard: pictureCardSchema,
+  TheoryCard: theoryCardSchema,
 };
-
-// card => topic, theme, urlSrc, createdAt, owner
-
-// code -> code
-// picture -> pictureName, pictureId // or filename fileId
-// theory -> question, answer

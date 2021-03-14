@@ -9,7 +9,6 @@ const dotenv = require("dotenv");
 const path = require("path");
 
 const userRouter = require("./routes/user");
-// const cardsRouter = require('./routes/cards')
 
 dotenv.config();
 
@@ -25,7 +24,6 @@ app.use("/user", userRouter);
 const CONNECTION_URL = process.env.CONNECTION_MONGO_URL;
 const PORT = process.env.PORT || 5000;
 
-//   вынести за пределы конекшн, и просто юзать после createConnection
 const storage = new GridFsStorage({
   url: CONNECTION_URL,
   file: (req, file) => {
@@ -63,11 +61,6 @@ const upload = multer({
   },
 });
 
-// let gfs;
-// let collection;
-
-// multiple connections
-
 const connectionParams = [
   CONNECTION_URL,
   {
@@ -90,7 +83,7 @@ mongoose
         bucketName: process.env.BUCKET_NAME,
       });
 
-      app.use("/cards", require("./routes/cards")(upload, gfs)); // collection
+      app.use("/cards", require("./routes/cards")(upload, gfs));
 
       app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
     });

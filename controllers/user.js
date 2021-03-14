@@ -8,13 +8,10 @@ exports.signin = async (req, res) => {
   try {
     const existingUser = await UserModel.findOne({ email });
 
-    if (!existingUser)
-      // return res.status(404).json({ message: "User does not exist" });
-      return res.status(404).send("User does not exist");
+    if (!existingUser) return res.status(404).send("User does not exist");
 
     const isPswdCorrect = await bcrypt.compare(password, existingUser.password);
     if (!isPswdCorrect) return res.status(400).send("Invalid credentials");
-    // return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },

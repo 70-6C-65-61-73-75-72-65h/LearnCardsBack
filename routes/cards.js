@@ -3,6 +3,7 @@ const express = require("express");
 const {
   createCard,
   getTodayCards,
+  getAllCards,
   getSingleCard,
   cardWasViewed,
   deleteCard,
@@ -15,7 +16,8 @@ const auth = require("../middleware/auth.js");
 
 const CardRouter = (upload, gfs) => {
   router.post("/", upload.single("picture"), auth, createCard());
-  router.get("/", auth, getTodayCards());
+  router.get("/", auth, getAllCards());
+  router.get("/learn", auth, getTodayCards());
   router.get("/:id", auth, getSingleCard());
   router.patch("/checked/:id", auth, cardWasViewed());
   router.patch("/update/:id", upload.single("picture"), auth, updateCard());

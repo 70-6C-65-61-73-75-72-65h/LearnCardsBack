@@ -45,6 +45,15 @@ const cardSchema = new mongoose.Schema(
       required: true,
       type: String,
     },
+
+    question: {
+      required: true,
+      type: [String],
+    },
+    answer: {
+      required: true,
+      type: String,
+    },
   },
   options
 );
@@ -83,19 +92,7 @@ const pictureCardSchema = CardModel.discriminator(
 
 const theoryCardSchema = CardModel.discriminator(
   "theory",
-  new mongoose.Schema(
-    {
-      question: {
-        required: true,
-        type: String,
-      },
-      answer: {
-        required: true,
-        type: String,
-      },
-    },
-    options
-  )
+  new mongoose.Schema({}, options)
 );
 
 module.exports = {
